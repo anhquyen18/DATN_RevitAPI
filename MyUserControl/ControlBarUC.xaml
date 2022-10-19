@@ -1,0 +1,67 @@
+﻿<UserControl x:Class="RevitAPI_Quyen.MyUserControl.ControlBarUC"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:RevitAPI_Quyen.MyUserControl"
+             mc:Ignorable="d" 
+             
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" 
+             xmlns:viewmodel="clr-namespace:RevitAPI_Quyen.ViewModel" 
+             
+             d:DataContext="{d:DesignInstance Type=viewmodel:ControlBarViewModel}"
+             
+             Name="ucControlBar">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Primary/MaterialDesignColor.blue.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Accent/MaterialDesignColor.Lime.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="MouseLeftButtonDown">
+            <i:InvokeCommandAction Command="{Binding MouseMoveWindowCommand}" CommandParameter="{Binding ElementName=ucControlBar}"/>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+    <Grid>
+        <Grid>
+            <materialDesign:ColorZone Mode="PrimaryLight" >
+                <DockPanel>
+                    <StackPanel DockPanel.Dock="Right"  Background="Transparent" Orientation="Horizontal">
+                        <StackPanel.Resources>
+                            <Style TargetType="Button">
+                                <Setter Property="Margin" Value="2 4 2 4"></Setter>
+                                <Setter Property="Width" Value="40"></Setter>
+                            </Style>
+                        </StackPanel.Resources>
+                        <Button Command="{Binding MinimizeWindowCommand}" 
+                            CommandParameter="{Binding ElementName=ucControlBar}"
+                        ToolTip="Đóng" ToolBar.OverflowMode="AsNeeded" Background="LawnGreen">
+                            <materialDesign:PackIcon Kind="WindowMinimize" />
+                        </Button>
+                        <Button Command="{Binding MaximizeWindowCommand}" 
+                            CommandParameter="{Binding ElementName=ucControlBar}"
+                        ToolTip="Đóng" ToolBar.OverflowMode="AsNeeded" Background="LawnGreen">
+                            <materialDesign:PackIcon Kind="WindowMaximize" />
+                        </Button>
+                        <Button Command="{Binding CloseWindowCommand}" 
+                            CommandParameter="{Binding ElementName=ucControlBar}"
+                            ToolTip="Đóng" ToolBar.OverflowMode="AsNeeded" Background="OrangeRed">
+                            <materialDesign:PackIcon Kind="WindowClose" />
+                        </Button>
+                    </StackPanel>
+
+                    <StackPanel DockPanel.Dock="Left" Orientation="Horizontal">
+                        <ToggleButton Style="{DynamicResource MaterialDesignHamburgerToggleButton}" />
+                        <TextBlock VerticalAlignment="Center" Margin="16 0 0 0" Text="{Binding Tag, ElementName=ucControlBar}"></TextBlock>
+                    </StackPanel>
+                </DockPanel>
+            </materialDesign:ColorZone>
+        </Grid>
+    </Grid>
+</UserControl>

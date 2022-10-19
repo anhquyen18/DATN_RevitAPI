@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<RevitAddIns>
+  <AddIn Type="Application">
+    <Name>BIM DUT</Name>
+    <Assembly>RevitAPI_Quyen.dll</Assembly>
+    <AddInId>fa3eba40-2e14-4981-b1ad-81f96d67cbbf</AddInId>
+    <FullClassName>RevitAPI_Quyen.RibbonTab</FullClassName>
+    <Text>Ribbon Tab</Text>
+    <VendorId>PAI00</VendorId>
+    <VendorDescription>Tran Anh Quyen, anhquyen18092000@gmail.com</VendorDescription>
+  </AddIn>
+
+  <!--<AddIn Type="Command">
+    <Assembly>RevitAPI_Quyen.dll</Assembly>
+    <AddInId>57763c9c-1fe8-4e68-a09e-85091d2eb1be</AddInId>
+    <FullClassName>RevitAPI_Quyen.ScheduleToExcelCommand</FullClassName>
+    <Text>Xuất thống kê sang Excel</Text>
+    <VendorId>PAI01</VendorId>
+    <VendorDescription>Tran Anh Quyen, anhquyen18092000@gmail.com</VendorDescription>
+  </AddIn>-->
+
+  <AddIn Type="Command">
+    <Assembly>RevitAPI_Quyen.dll</Assembly>
+    <ClientId>71da2592-c826-4835-a4fe-275496bd88c2</ClientId>
+    <FullClassName>RevitAPI_Quyen.Commands.CreateScheduleCommand</FullClassName>
+    <Text>Create Schedule</Text>
+    <Description>quick create a schedule</Description>
+    <VendorId>PAI02</VendorId>
+    <VendorDescription>Tran Anh Quyen, anhquyen18092000@gmail.com</VendorDescription>
+  </AddIn>
+
+</RevitAddIns>

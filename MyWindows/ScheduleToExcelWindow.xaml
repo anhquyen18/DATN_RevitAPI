@@ -1,0 +1,138 @@
+﻿<Window x:Class="RevitAPI_Quyen.MyWindows.ScheduleToExcelWindow"
+		xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+		xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+		xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+		xmlns:local="clr-namespace:RevitAPI_Quyen"
+		mc:Ignorable="d"
+		xmlns:uc="clr-namespace:RevitAPI_Quyen.MyUserControl"
+		xmlns:viewmodel="clr-namespace:RevitAPI_Quyen.ViewModel" 
+		
+		xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" 
+		TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+		TextElement.FontWeight="Regular"
+		TextElement.FontSize="13"
+		TextOptions.TextFormattingMode="Ideal"
+		TextOptions.TextRenderingMode="Auto"
+		Background="{DynamicResource MaterialDesignPaper}"
+		FontFamily="{DynamicResource MaterialDesignFont}"
+		ResizeMode="NoResize"
+		WindowStyle="None"
+		WindowStartupLocation="CenterScreen"
+		
+        d:DataContext="{d:DesignInstance Type=viewmodel:ScheduleToExcelViewModel}"
+		
+		x:Name="mainWindow"
+        
+		Title="Schedule To Excel" Height="450" Width="800">
+
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Primary/MaterialDesignColor.blue.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Accent/MaterialDesignColor.Lime.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <!--<Style x:Name="myHeaderStyle" TargetType="{x:Type GridViewColumnHeader}">
+                <Setter Property="Visibility" Value="Collapsed" />
+            </Style>-->
+        </ResourceDictionary>
+        
+    </Window.Resources>
+
+    <Grid>
+        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"></RowDefinition>
+            <RowDefinition Height="150px"></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            <uc:ControlBarUC Tag="{Binding Title, ElementName=mainWindow}"></uc:ControlBarUC>
+        </Grid>
+        <Grid Grid.Row ="1"  Background="Azure">
+            <GroupBox Header="File Options" Margin="10">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Grid Grid.Row="0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition></ColumnDefinition>
+                            <ColumnDefinition Width="Auto"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <Grid Grid.Column="0">
+                            <TextBox Name="templateFileTb" Text="{Binding TemplateFilePath}" materialDesign:HintAssist.Hint="Template File" Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
+                        </Grid>
+                        <Grid Grid.Column="1" Margin="0 0 15 0">
+                            <Button Command="{Binding SelectFileCommand}" Style="{StaticResource MaterialDesignRaisedDarkButton}" Width="100" ToolTip="Resource name: MaterialDesignRaisedLightButton">
+                                Select...
+                            </Button>
+                        </Grid>
+                    </Grid>
+                    <Grid Grid.Row="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition></ColumnDefinition>
+                            <ColumnDefinition Width="11.1"></ColumnDefinition>
+                            <ColumnDefinition Width="104.1"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid Grid.Column="0" Margin="0,0,0,0.2">
+                            <TextBox Name="saveFileTb" Text="{Binding SaveFilePath}" materialDesign:HintAssist.Hint="Save As" Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
+                        </Grid>
+                        <Grid Grid.Column="1" Margin="0,0,15.2,0.2" Grid.ColumnSpan="2">
+                            <Button Command="{Binding BrowsePathCommand}" Style="{StaticResource MaterialDesignRaisedDarkButton}" Width="100" ToolTip="Resource name: MaterialDesignRaisedLightButton">
+                                Browse...
+                            </Button>
+                        </Grid>
+                    </Grid>
+                </Grid>
+            </GroupBox>
+        </Grid>
+        <Grid Grid.Row ="2"  Background="Azure">
+            <materialDesign:Card Margin="10" Background="Azure">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition ></ColumnDefinition>
+                        <ColumnDefinition Width="150"></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Grid Grid.Column="0">
+                        <Grid Panel.ZIndex="0">
+                            <GroupBox Header="Revit Schedule List">
+                                <ListView Name="RevitScheduleListView" ItemsSource="{Binding RevitScheduleList, Mode=TwoWay}" SelectedIndex="{Binding RevitScheduleSelectedIndex}" DisplayMemberPath="ScheduleName" SelectedValuePath="Id" ScrollViewer.VerticalScrollBarVisibility="Hidden"></ListView>
+                            </GroupBox>
+                        </Grid>
+                        <WrapPanel Panel.ZIndex="1" Background="Transparent" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0 40 10 5">
+                            <CheckBox Command="{Binding SelectAllRevitScheduleCommand}" IsChecked="{Binding IsCheckAllRevitScheduleListCB}" Content="All" Style="{StaticResource MaterialDesignCheckBox}"></CheckBox>
+                        </WrapPanel>
+                    </Grid>
+                    <Grid Grid.Column="1">
+                        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <Button Command="{Binding AddToLeftCommand}" Style="{StaticResource MaterialDesignRaisedDarkButton}" Width="80" ToolTip="Resource name: MaterialDesignRaisedLightButton" Margin="0 55 0 0">
+                                <materialDesign:PackIcon Kind="ArrowLeftBold" Height="24" Width="24"/>
+                            </Button>
+                            <Button Command="{Binding AddToRightCommand}" Style="{StaticResource MaterialDesignRaisedDarkButton}" Width="80" ToolTip="Resource name: MaterialDesignRaisedLightButton" Margin="0 5 0 0">
+                                <materialDesign:PackIcon Kind="ArrowRightBold" Height="24" Width="24"/>
+                            </Button>
+                            <Button Name="exportBt" Command="{Binding ExportCommand}" Style="{StaticResource MaterialDesignRaisedDarkButton}" Width="100" ToolTip="Resource name: MaterialDesignRaisedLightButton" Margin="0 60 0 0" FontWeight="Bold">
+                                EXPORT
+                            </Button>
+                        </StackPanel>
+                    </Grid>
+                    <Grid Grid.Column="2">
+                        <Grid Panel.ZIndex="0">
+                            <GroupBox Header="Schedule to Excel List" Margin="0">
+                                <ListView  x:Name="SelectedListView" ItemsSource="{Binding SelectedScheduleList, Mode=TwoWay}" SelectedIndex="{Binding SelectedScheduleSelectedIndex}" DisplayMemberPath="ScheduleName" SelectedValuePath="Id" ScrollViewer.VerticalScrollBarVisibility="Hidden"></ListView>
+                            </GroupBox>
+                        </Grid>
+                        <WrapPanel Panel.ZIndex="1" Background="Transparent" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0 40 10 5">
+                            <CheckBox IsChecked="{Binding IsCheckAllSelectListCB}" Content="All" Style="{StaticResource MaterialDesignCheckBox}"></CheckBox>
+                        </WrapPanel>
+                    </Grid>
+                </Grid>
+            </materialDesign:Card>
+        </Grid>
+    </Grid>
+</Window>

@@ -1,0 +1,3 @@
+﻿copy "$(TargetDir)"Schedule2Excel.addin"" "C:\ProgramData\Autodesk\Revit\Addins\2021"
+copy "$(TargetDir)"DATN_RevitAPI.dll"" "C:\ProgramData\Autodesk\Revit\Addins\2021\DATN"
+copy "$(SolutionDir)"Post-build.txt"" "C:\ProgramData\Autodesk\Revit\Addins\2021\DATN"
