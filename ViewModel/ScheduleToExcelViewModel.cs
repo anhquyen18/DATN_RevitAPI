@@ -24,27 +24,28 @@ namespace RevitAPI_Quyen.ViewModel
         public ICommand BrowsePathCommand { get; set; }
         public ICommand AddToLeftCommand { get; set; }
         public ICommand AddToRightCommand { get; set; }
-        public ICommand SelectAllRevitScheduleCommand { get; set; }
+        public ICommand MoveDownCommand { get; set; }
+        public ICommand MoveUpCommand { get; set; }
         public ICommand ExportCommand { get; set; }
         #endregion
 
         #region binding variables
         private bool _IsCheckAllRevitScheduleListCB;
         public bool IsCheckAllRevitScheduleListCB { get => _IsCheckAllRevitScheduleListCB; set { _IsCheckAllRevitScheduleListCB = value; OnPropertyChanged(); } }
-        private ObservableCollection<ScheduleItem> _SomeItemSelected;
-        public ObservableCollection<ScheduleItem> SomeItemSelected { get => _SomeItemSelected; set { _SomeItemSelected = value; OnPropertyChanged(); } }
+        private ObservableCollection<ScheduleItem> _ToExcelSelectedItems;
+        public ObservableCollection<ScheduleItem> ToExcelSelectedItems { get => _ToExcelSelectedItems; set { _ToExcelSelectedItems = value; OnPropertyChanged(); } }
+        private ObservableCollection<ScheduleItem> _RevitSelectedItems;
+        public ObservableCollection<ScheduleItem> RevitSelectedItems { get => _RevitSelectedItems; set { _RevitSelectedItems = value; OnPropertyChanged(); } }
         private string _TemplateFilePath;
         public string TemplateFilePath { get => _TemplateFilePath; set { _TemplateFilePath = value; OnPropertyChanged(); } }
         private string _SaveFilePath;
         public string SaveFilePath { get => _SaveFilePath; set { _SaveFilePath = value; OnPropertyChanged(); } }
-        private ListView _RevitScheduleListView;
-        public ListView RevitScheduleListView { get => _RevitScheduleListView; set { _RevitScheduleListView = value; OnPropertyChanged(); } }
         private ObservableCollection<ScheduleItem> _RevitScheduleList;
         public ObservableCollection<ScheduleItem> RevitScheduleList { get => _RevitScheduleList; set { _RevitScheduleList = value; OnPropertyChanged(); } }
-        private ObservableCollection<ScheduleItem> _SelectedScheduleList;
-        public ObservableCollection<ScheduleItem> SelectedScheduleList { get => _SelectedScheduleList; set { _SelectedScheduleList = value; OnPropertyChanged(); } }
-        private int _SelectedScheduleSelectedIndex;
-        public int SelectedScheduleSelectedIndex { get => _SelectedScheduleSelectedIndex; set { _SelectedScheduleSelectedIndex = value; OnPropertyChanged(); } }
+        private ObservableCollection<ScheduleItem> _ToExcelScheduleList;
+        public ObservableCollection<ScheduleItem> ToExcelScheduleList { get => _ToExcelScheduleList; set { _ToExcelScheduleList = value; OnPropertyChanged(); } }
+        private int _ToExcelSelectedIndex;
+        public int ToExcelSelectedIndex { get => _ToExcelSelectedIndex; set { _ToExcelSelectedIndex = value; OnPropertyChanged(); } }
         private int _RevitScheduleSelectedIndex;
         public int RevitScheduleSelectedIndex { get => _RevitScheduleSelectedIndex; set { _RevitScheduleSelectedIndex = value; OnPropertyChanged(); } }
         #endregion
@@ -67,7 +68,7 @@ namespace RevitAPI_Quyen.ViewModel
 
         public ScheduleToExcelViewModel()
         {
-            
+
             #region file options panel
             TemplateFilePath = @"F:\University\Hoc ky 9\DATN\RevitAPI_Quyen\Resources\template.xlsx";
             SaveFilePath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @"\exported_schedule.xlsx";
@@ -81,62 +82,77 @@ namespace RevitAPI_Quyen.ViewModel
                 if (selectFileDialog.ShowDialog() == true)
                     TemplateFilePath = selectFileDialog.FileName;
             });
-            
+
             #endregion
 
             #region revit schedule list panel
             RevitScheduleList = new ObservableCollection<ScheduleItem>();
-            SelectedScheduleList = new ObservableCollection<ScheduleItem>();
-            SelectAllRevitScheduleCommand = new RelayCommand<object>((p) => { return true; }, (p) =>
-            {
-                int count = RevitScheduleList.Count;
-
-
-            });
+            ToExcelScheduleList = new ObservableCollection<ScheduleItem>();
 
             AddToLeftCommand = new RelayCommand<object>((p) => { return true; }, (p) =>
             {
-                int index = SelectedScheduleSelectedIndex;
-                int n = SelectedScheduleList.Count;
+                int n = ToExcelScheduleList.Count;
                 if (n > 0)
                 {
-                    if (SelectedScheduleSelectedIndex == -1)
+                    if (ToExcelSelectedIndex == -1)
                         return;
-                    ObservableCollection<ScheduleItem> temp = new ObservableCollection<ScheduleItem>();
-                    RevitScheduleList.Add(SelectedScheduleList[index]);
-                    temp.Add(SelectedScheduleList[index]);
-
-                    for (int i = 0; i < temp.Count; i++)
+                    foreach (ScheduleItem item in ToExcelSelectedItems.ToList<ScheduleItem>())
                     {
-                        SelectedScheduleList.Remove(temp[i]);
+                        RevitScheduleList.Add(item);
+                        ToExcelScheduleList.Remove(item);
                     }
-                    // Mỗi lần chuyển là sắp sếp lại List nhưng chưa sắp xếp được
-                    SelectedScheduleList.OrderBy(s => s.ScheduleName);
-                    RevitScheduleList.OrderBy(s => s.ScheduleName);
                 }
+                // Mỗi lần chuyển là sắp sếp lại List nhưng chưa sắp xếp được
+                ToExcelScheduleList.OrderBy(s => s.ScheduleName);
+                RevitScheduleList.OrderBy(s => s.ScheduleName);
             });
             AddToRightCommand = new RelayCommand<object>((p) => { return true; }, (p) =>
             {
-                int index = RevitScheduleSelectedIndex;
                 int n = RevitScheduleList.Count;
                 if (n > 0)
                 {
                     if (RevitScheduleSelectedIndex == -1)
                         return;
-                    ObservableCollection<ScheduleItem> temp = new ObservableCollection<ScheduleItem>();
-                    SelectedScheduleList.Add(RevitScheduleList[index]);
-                    temp.Add(RevitScheduleList[index]);
-
-                    for (int i = 0; i < temp.Count; i++)
+                    foreach (ScheduleItem item in RevitSelectedItems.ToList<ScheduleItem>())
                     {
-                        RevitScheduleList.Remove(temp[i]);
+                        ToExcelScheduleList.Add(item);
+                        RevitScheduleList.Remove(item);
                     }
-                    SelectedScheduleList.OrderBy(s => s.ScheduleName);
-                    RevitScheduleList.OrderBy(s => s.ScheduleName);
+                }
+                ToExcelScheduleList.OrderBy(s => s.ScheduleName);
+                RevitScheduleList.OrderBy(s => s.ScheduleName);
+            });
+            MoveDownCommand = new RelayCommand<object>((p) => { return true; }, (p) =>
+            {
+                int oldIndex = ToExcelSelectedIndex;
+                if (oldIndex == -1)
+                    return;
+                ScheduleItem item = ToExcelScheduleList[oldIndex];
+                if (oldIndex < ToExcelScheduleList.Count - 1)
+                {
+                    int newIndex = oldIndex + 1;
+                    ToExcelScheduleList.Remove(item);
+                    ToExcelScheduleList.Insert(newIndex, item);
+                    ToExcelSelectedIndex = newIndex;
+                }
+            });
+            MoveUpCommand = new RelayCommand<object>((p) => { return true; }, (p) =>
+            {
+                int oldIndex = ToExcelSelectedIndex;
+                if (oldIndex == -1)
+                    return;
+                ScheduleItem item = ToExcelScheduleList[oldIndex];
+                if (oldIndex > 0)
+                {
+                    int newIndex = oldIndex - 1;
+                    ToExcelScheduleList.Remove(item);
+                    ToExcelScheduleList.Insert(newIndex, item);
+                    ToExcelSelectedIndex = newIndex;
                 }
             });
             ExportCommand = new RelayCommand<object>((p) => { return true; }, (p) =>
             {
+
                 if (!System.IO.File.Exists(TemplateFilePath))
                 {
                     TaskDialog.Show(TAG, "The template file is empty or does not exist.");
@@ -153,7 +169,7 @@ namespace RevitAPI_Quyen.ViewModel
                     TaskDialog.Show(TAG, "The save as path is empty or does not exist.");
                     return;
                 }
-                if (SelectedScheduleList.Count == 0)
+                if (ToExcelScheduleList.Count == 0)
                 {
                     TaskDialog.Show(TAG, "The exported list is empty.");
                     return;
@@ -229,9 +245,9 @@ namespace RevitAPI_Quyen.ViewModel
             int start_col = 1;
             StringBuilder sb = new StringBuilder();
 
-            for (int k = 0; k < SelectedScheduleList.Count; k++)
+            for (int k = 0; k < ToExcelScheduleList.Count; k++)
             {
-                ScheduleItem item = SelectedScheduleList[k];
+                ScheduleItem item = ToExcelScheduleList[k];
                 ViewSchedule OriVS = _Doc.GetElement(new ElementId(item.Id)) as ViewSchedule;
 
                 ViewSchedule vs = OriVS;

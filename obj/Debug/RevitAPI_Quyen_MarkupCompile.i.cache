@@ -16,5 +16,5 @@ DEBUG;TRACE
 25-1031903159
 App.xaml;MyWindows\CreateScheduleWindow.xaml;MyWindows\ScheduleToExcelWindow.xaml;MyUserControl\ControlBarUC.xaml;ResourceXAML\MainResource.xaml;
 
-False
+True
 

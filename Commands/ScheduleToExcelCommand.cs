@@ -42,7 +42,7 @@ namespace RevitAPI_Quyen.Commands
 
 
                 ScheduleToExcelWindow wd = new ScheduleToExcelWindow();
-                wd.RevitScheduleListView.ItemsSource = scheduleList;
+                wd.RevitListView.ItemsSource = scheduleList;
                 wd.Doc = doc;
                 wd.App = app;
                 wd.ShowDialog();
