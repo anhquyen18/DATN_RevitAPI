@@ -30,8 +30,6 @@ namespace RevitAPI_Quyen.ViewModel
         #endregion
 
         #region binding variables
-        private bool _IsCheckAllRevitScheduleListCB;
-        public bool IsCheckAllRevitScheduleListCB { get => _IsCheckAllRevitScheduleListCB; set { _IsCheckAllRevitScheduleListCB = value; OnPropertyChanged(); } }
         private ObservableCollection<ScheduleItem> _ToExcelSelectedItems;
         public ObservableCollection<ScheduleItem> ToExcelSelectedItems { get => _ToExcelSelectedItems; set { _ToExcelSelectedItems = value; OnPropertyChanged(); } }
         private ObservableCollection<ScheduleItem> _RevitSelectedItems;
@@ -73,7 +71,6 @@ namespace RevitAPI_Quyen.ViewModel
             TemplateFilePath = @"F:\University\Hoc ky 9\DATN\RevitAPI_Quyen\Resources\template.xlsx";
             SaveFilePath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @"\exported_schedule.xlsx";
             //SaveFilePath = @"F:\University\Hoc ky 9\DATN\RevitAPI_Quyen" + @"\exported_schedule.xlsx";
-            IsCheckAllRevitScheduleListCB = true;
 
             SelectFileCommand = new RelayCommand<object>((p) => { return true; }, (p) =>
             {

@@ -4,6 +4,7 @@ using MaterialDesignThemes.Wpf;
 using RevitAPI_Quyen.ViewModel;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -43,6 +44,24 @@ namespace RevitAPI_Quyen.MyWindows
         {
             Viewmodel.App = this.App;
             Viewmodel.Doc = this.Doc;
+        }
+
+        private void ActiveListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            Viewmodel.ActiveSelectedItems = new ObservableCollection<ScheduleItem>();
+            foreach (ScheduleItem item in ActiveListView.SelectedItems)
+            {
+                Viewmodel.ActiveSelectedItems.Add(item);
+            }
+        }
+
+        private void CreationListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            Viewmodel.CreationSelectedItems = new ObservableCollection<ScheduleItem>();
+            foreach (ScheduleItem item in CreationListView.SelectedItems)
+            {
+                Viewmodel.CreationSelectedItems.Add(item);
+            }
         }
     }
 }

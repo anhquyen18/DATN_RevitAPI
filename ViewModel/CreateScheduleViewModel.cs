@@ -18,16 +18,24 @@ namespace RevitAPI_Quyen.ViewModel
     public class CreateScheduleViewModel : BaseViewModel
     {
         #region commands
-        public ICommand SelectFileCommand { get; set; }
-        public ICommand BrowsePathCommand { get; set; }
         public ICommand AddToLeftCommand { get; set; }
         public ICommand AddToRightCommand { get; set; }
-        public ICommand SelectAllRevitScheduleCommand { get; set; }
         public ICommand ExportCommand { get; set; }
         #endregion
 
         #region binding variables
-
+        private ObservableCollection<ScheduleItem> _ActiveScheduleList;
+        public ObservableCollection<ScheduleItem> ActiveScheduleList { get => _ActiveScheduleList; set { _ActiveScheduleList = value; OnPropertyChanged(); } }
+        private ObservableCollection<ScheduleItem> _CreationScheduleList;
+        public ObservableCollection<ScheduleItem> CreationScheduleList { get => _CreationScheduleList; set { _CreationScheduleList = value; OnPropertyChanged(); } }
+        private ObservableCollection<ScheduleItem> _ActiveSelectedItems;
+        public ObservableCollection<ScheduleItem> ActiveSelectedItems { get => _ActiveSelectedItems; set { _ActiveSelectedItems = value; OnPropertyChanged(); } }
+        private ObservableCollection<ScheduleItem> _CreationSelectedItems;
+        public ObservableCollection<ScheduleItem> CreationSelectedItems { get => _CreationSelectedItems; set { _CreationSelectedItems = value; OnPropertyChanged(); } }
+        private int _ActiveSelectedIndex;
+        public int ActiveSelectedIndex { get => _ActiveSelectedIndex; set { _ActiveSelectedIndex = value; OnPropertyChanged(); } }
+        private int _CreationSelectedIndex;
+        public int CreationSelectedIndex { get => _CreationSelectedIndex; set { _CreationSelectedIndex = value; OnPropertyChanged(); } }
         #endregion
 
         #region revit variables
@@ -35,18 +43,68 @@ namespace RevitAPI_Quyen.ViewModel
         public Autodesk.Revit.ApplicationServices.Application App { set { _App = value; } }
         private Document _Doc;
         public Document Doc { get => _Doc; set { _Doc = value; } }
-        BuiltInParameter[] bipList = new BuiltInParameter[] {BuiltInParameter.WALL_BASE_CONSTRAINT,BuiltInParameter.ELEM_FAMILY_AND_TYPE_PARAM,
-            BuiltInParameter.HOST_AREA_COMPUTED, BuiltInParameter.CURVE_ELEM_LENGTH};
-        Dictionary<BuiltInParameter, string> wallHeadingList = new Dictionary<BuiltInParameter, string>() {
+        private Dictionary<BuiltInParameter, string> wallHeadingList = new Dictionary<BuiltInParameter, string>() {
            { BuiltInParameter.WALL_BASE_CONSTRAINT, "TẦNG" }, { BuiltInParameter.ELEM_FAMILY_AND_TYPE_PARAM, "LOẠI FAMILY" },
         { BuiltInParameter.HOST_AREA_COMPUTED, "DIỆN TÍCH (m2)" }, { BuiltInParameter.CURVE_ELEM_LENGTH, "CHIỀU DÀI TƯỜNG (mm)" },
         { BuiltInParameter.HOST_VOLUME_COMPUTED, "THỂ TÍCH (m3)" }
         };
-        string[] availableScheduleList = new string[] { "THỐNG KÊ TƯỜNG XÂY", "TỔNG HỢP THỐNG KÊ BÊTÔNG DẦM",
-            "TỔNG HỢP THỐNG KÊ BÊTÔNG CỘT", "TỔNG HỢP THỐNG KÊ BÊTÔNG MÓNG" };
+        private MyScheduleField[] wallScheduleFieldList = new MyScheduleField[] {
+            new MyScheduleField(BuiltInParameter.WALL_BASE_CONSTRAINT, "TẦNG", null),
+            new MyScheduleField(BuiltInParameter.ELEM_FAMILY_AND_TYPE_PARAM, "LOẠI FAMILY", null),
+            new MyScheduleField(BuiltInParameter.HOST_AREA_COMPUTED, "DIỆN TÍCH (m2)", UnitTypeId.SquareMeters),
+            new MyScheduleField(BuiltInParameter.CURVE_ELEM_LENGTH, "CHIỀU DÀI TƯỜNG (mm)", UnitTypeId.Millimeters),
+            new MyScheduleField(BuiltInParameter.HOST_VOLUME_COMPUTED, "THỂ TÍCH (m3)", UnitTypeId.CubicMeters),
+        };
+        private BuiltInParameter[] showTotalList = new BuiltInParameter[] { 
+            BuiltInParameter.CURVE_ELEM_LENGTH,
+            BuiltInParameter.HOST_VOLUME_COMPUTED
+        };
         #endregion
+
         public CreateScheduleViewModel()
         {
+            ActiveScheduleList = new ObservableCollection<ScheduleItem>() {
+                new ScheduleItem( "THỐNG KÊ TƯỜNG XÂY", wallScheduleFieldList),
+                new ScheduleItem( "TỔNG HỢP THỐNG KÊ BÊTÔNG DẦM", wallScheduleFieldList),
+                new ScheduleItem( "TỔNG HỢP THỐNG KÊ BÊTÔNG CỘT", wallScheduleFieldList),
+                new ScheduleItem( "TỔNG HỢP THỐNG KÊ BÊTÔNG MÓNG", wallScheduleFieldList),
+            };
+            CreationScheduleList = new ObservableCollection<ScheduleItem>();
+
+            AddToRightCommand = new RelayCommand<object>((p) => { return true; }, (p) =>
+            {
+                int n = ActiveScheduleList.Count;
+                if (n > 0)
+                {
+                    if (ActiveSelectedIndex == -1)
+                        return;
+                    foreach (ScheduleItem item in ActiveSelectedItems.ToList<ScheduleItem>())
+                    {
+                        CreationScheduleList.Add(item);
+                        ActiveScheduleList.Remove(item);
+                    }
+                }
+                // Mỗi lần chuyển là sắp sếp lại List nhưng chưa sắp xếp được
+                CreationScheduleList.OrderBy(s => s.ScheduleName);
+                ActiveScheduleList.OrderBy(s => s.ScheduleName);
+            });
+            AddToLeftCommand = new RelayCommand<object>((p) => { return true; }, (p) =>
+            {
+                int n = CreationScheduleList.Count;
+                if (n > 0)
+                {
+                    if (CreationSelectedIndex == -1)
+                        return;
+                    foreach (ScheduleItem item in CreationSelectedItems.ToList<ScheduleItem>())
+                    {
+                        ActiveScheduleList.Add(item);
+                        CreationScheduleList.Remove(item);
+                    }
+                }
+                // Mỗi lần chuyển là sắp sếp lại List nhưng chưa sắp xếp được
+                CreationScheduleList.OrderBy(s => s.ScheduleName);
+                ActiveScheduleList.OrderBy(s => s.ScheduleName);
+            });
             ExportCommand = new RelayCommand<object>((p) => { return true; }, (p) =>
             {
                 Transaction t = new Transaction(Doc, "Create Schedule");
@@ -54,43 +112,45 @@ namespace RevitAPI_Quyen.ViewModel
                 TaskDialog noti = new TaskDialog("Chú ý");
                 noti.MainContent = "this is notificaftion";
                 noti.Show();
-                try
+                ElementId wallCategoryId = new ElementId(BuiltInCategory.OST_Walls);
+                ViewSchedule wallSchedule = ViewSchedule.CreateSchedule(Doc, wallCategoryId);
+                ScheduleSortGroupField baseConstraintSorting = null;
+                //ScheduleFilter BaseConstraintFilter = null;
+                //string levelNameFilter = "TẦNG 1";
+                wallSchedule.Definition.ShowGrandTotal = true;
+                foreach (ScheduleItem item in CreationScheduleList)
                 {
-                    ElementId wallCategoryId = new ElementId(BuiltInCategory.OST_Walls);
-                    ViewSchedule wallSchedule = ViewSchedule.CreateSchedule(Doc, wallCategoryId);
-                    ScheduleSortGroupField baseConstraintSorting = null;
-                    //ScheduleFilter BaseConstraintFilter = null;
-                    //string levelNameFilter = "TẦNG 1";
-                    wallSchedule.Name = "THỐNG KẾ TƯỜNG XÂY";
-                    wallSchedule.Definition.ShowGrandTotal = true;
-                    foreach (KeyValuePair<BuiltInParameter, string> pair in wallHeadingList)
+                    if (item.ScheduleName == "THỐNG KÊ TƯỜNG XÂY")
                     {
-                        foreach (SchedulableField sf in wallSchedule.Definition.GetSchedulableFields())
+                        wallSchedule.Name = item.ScheduleName;
+                        foreach (MyScheduleField schedulefield in item.ScheduleFieldList)
                         {
-                            if (CheckField(pair.Key, sf))
+                            foreach (SchedulableField schedulablefield in wallSchedule.Definition.GetSchedulableFields())
                             {
-                                ScheduleField scheduleField = wallSchedule.Definition.AddField(sf);
-                                scheduleField.ColumnHeading = pair.Value;
-                                if (CheckField(BuiltInParameter.WALL_BASE_CONSTRAINT, sf))
+                                if (CheckField(schedulefield.BIParameter, schedulablefield))
                                 {
-                                    baseConstraintSorting = new ScheduleSortGroupField(scheduleField.FieldId);
-                                    //baseConstraintSorting.ShowHeader = true;
-                                    wallSchedule.Definition.AddSortGroupField(baseConstraintSorting);
-                                }
-                                ShowTotal(BuiltInParameter.HOST_VOLUME_COMPUTED, UnitTypeId.CubicMeters, sf, scheduleField);
+                                    ScheduleField scheduleField = wallSchedule.Definition.AddField(schedulablefield);
+                                    scheduleField.ColumnHeading = schedulefield.ScheduleFieldName;
+                                    if (CheckField(BuiltInParameter.WALL_BASE_CONSTRAINT, schedulablefield))
+                                    {
+                                        baseConstraintSorting = new ScheduleSortGroupField(scheduleField.FieldId);
+                                        baseConstraintSorting.ShowHeader = true;
+                                        wallSchedule.Definition.AddSortGroupField(baseConstraintSorting);
+                                    }
+                                    if (showTotalList.Contains(schedulefield.BIParameter))
+                                        ShowTotal(schedulefield.BIParameter, schedulefield.Unit, schedulablefield, scheduleField);
 
+                                }
                             }
                         }
                     }
-                }
-                catch
-                {
-
                 }
 
                 t.Commit();
             });
         }
+
+        //public void CreateWallSchedule(ElementId categoryId, )
 
         public bool CheckField(BuiltInParameter bip, SchedulableField sf)
         {
@@ -101,17 +161,25 @@ namespace RevitAPI_Quyen.ViewModel
             return false;
         }
 
-        public void ShowTotal(BuiltInParameter bip, ForgeTypeId unitTypeId, SchedulableField sf, ScheduleField sF)
+        public void ShowTotal(BuiltInParameter bip, ForgeTypeId unit, SchedulableField sf, ScheduleField sF)
         {
             if (CheckField(bip, sf))
             {
                 FormatOptions fo = new FormatOptions();
                 fo.UseDefault = false;
-                fo.SetUnitTypeId(unitTypeId);
+                if (unit != null)
+                    fo.SetUnitTypeId(unit);
                 fo.Accuracy = 0.01;
                 sF.SetFormatOptions(fo);
                 sF.DisplayType = ScheduleFieldDisplayType.Totals;
             }
+        }
+
+        public Element GetLevelByName(Document doc, string name)
+        {
+            Level level = new FilteredElementCollector(doc).OfClass(typeof(Level))
+                .Cast<Level>().Where(x => x.Name == name).FirstOrDefault();
+            return level;
         }
 
 

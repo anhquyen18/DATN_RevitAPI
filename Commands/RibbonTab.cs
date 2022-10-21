@@ -18,25 +18,28 @@ namespace RevitAPI_Quyen
         {
             return Result.Succeeded;
         }
-
         public Result OnStartup(UIControlledApplication application)
         {
-
-            string nameTab = "BIM_DUT";
-            application.CreateRibbonTab(nameTab);
-            RibbonPanel panel = application.CreateRibbonPanel(nameTab, "Ex/Import Excel");
-            RibbonPanel panel2 = application.CreateRibbonPanel(nameTab, "Test Panel");
+            string tabName = "BIM_DUT";
+            application.CreateRibbonTab(tabName);
+            RibbonPanel ExcelPn = application.CreateRibbonPanel(tabName, "Ex/Import Excel");
+            RibbonPanel createSchedulePn = application.CreateRibbonPanel(tabName, "Create Schedule");
 
             string path = Assembly.GetExecutingAssembly().Location;
+
             PushButtonData toExcelBt = new PushButtonData("toExcelBt", "Schedule to Excel", path, "RevitAPI_Quyen.Commands.ScheduleToExcelCommand");
+            PushButtonData createScheduleBt = new PushButtonData("creatExcelBt", "Create schedules", path, "RevitAPI_Quyen.Commands.CreateScheduleCommand");
 
             //panel.AddItem(toExcelBt);
 
-            PushButton toExcel = panel.AddItem(toExcelBt) as PushButton;
+            PushButton toExcel = ExcelPn.AddItem(toExcelBt) as PushButton;
+            PushButton createSchedule = createSchedulePn.AddItem(createScheduleBt) as PushButton;
 
             Uri wrefImageUri = new Uri(@"F:\University\Hoc ky 9\DATN\RevitAPI_Quyen\Resources\logoCTT29x32.png");
             BitmapImage wrefImage = new BitmapImage(wrefImageUri);
+
             toExcel.LargeImage = wrefImage;
+            createSchedule.LargeImage = wrefImage;
 
 
             return Result.Succeeded;

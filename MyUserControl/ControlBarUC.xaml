@@ -57,8 +57,10 @@
                     </StackPanel>
 
                     <StackPanel DockPanel.Dock="Left" Orientation="Horizontal">
-                        <ToggleButton Style="{DynamicResource MaterialDesignHamburgerToggleButton}" />
-                        <TextBlock VerticalAlignment="Center" Margin="16 0 0 0" Text="{Binding Tag, ElementName=ucControlBar}"></TextBlock>
+                        <!--<materialDesign:PackIcon Kind="Earth" Width="40" Height="40" />-->
+                        <Image Source="/RevitAPI_Quyen;component/Resources/logoCTT29x32.png" Width="35" Height="35" Margin="5"/>
+
+                        <TextBlock VerticalAlignment="Center" Margin="10 0 0 0" Text="{Binding Tag, ElementName=ucControlBar}"></TextBlock>
                     </StackPanel>
                 </DockPanel>
             </materialDesign:ColorZone>

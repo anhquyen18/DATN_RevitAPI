@@ -66,10 +66,6 @@ namespace RevitAPI_Quyen.MyWindows
         private void RevitList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             Viewmodel.RevitSelectedItems = new ObservableCollection<ScheduleItem>();
-            if (RevitListView.SelectedItems.ToString() == "0")
-            {
-                return;
-            }
             foreach (ScheduleItem item in RevitListView.SelectedItems)
             {
                 Viewmodel.RevitSelectedItems.Add(item);

@@ -131,7 +131,7 @@
                                     </Button>
                                 </Grid>
                             </Grid>
-                            <Button Name="exportBt" Command="{Binding ExportCommand}" Style="{StaticResource MaterialDesignRaisedDarkButton}" Width="100" ToolTip="Resource name: MaterialDesignRaisedLightButton" Margin="0 50 0 0" FontWeight="Bold">
+                            <Button Name="exportBt" Command="{Binding ExportCommand}" Style="{StaticResource MaterialDesignRaisedDarkButton}" Width="100" ToolTip="Export schedule to Excel" Margin="0 50 0 0" FontWeight="Bold">
                                 EXPORT
                             </Button>
                         </StackPanel>

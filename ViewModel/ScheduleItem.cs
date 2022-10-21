@@ -13,17 +13,24 @@ namespace RevitAPI_Quyen.ViewModel
             get;
             set;
         }
-
         public int Id
         {
             get;
             set;
         }
-
         public ScheduleItem(int id, string name)
         {
             Id = id;
             ScheduleName = name;
         }
+        public MyScheduleField[] ScheduleFieldList { get; set; }
+        public ScheduleItem(string ScheduleName, MyScheduleField[] ScheduleFieldList)
+        {
+            this.ScheduleName = ScheduleName;
+            this.ScheduleFieldList = ScheduleFieldList;
+        }
+
+
+
     }
 }
