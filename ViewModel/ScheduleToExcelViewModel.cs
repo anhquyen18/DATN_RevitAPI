@@ -192,7 +192,7 @@ namespace RevitAPI_Quyen.ViewModel
                     if (xlApp != null)
                     {
                         xlApp.Quit();
-                        releaseObject(xlApp);
+                        ReleaseObject(xlApp);
                     }
                 }
 
@@ -249,7 +249,6 @@ namespace RevitAPI_Quyen.ViewModel
 
                 ViewSchedule vs = OriVS;
                 bool isDeleteTmp = false;
-                //if (chkExportElementId.Checked)
                 if (true)
                 {
                     bool canDuplicate = false;
@@ -259,16 +258,6 @@ namespace RevitAPI_Quyen.ViewModel
                     {
                         vs = tmpvs;
                         isDeleteTmp = true;
-                    }
-                    else
-                    {
-                        //if (!canDuplicate)
-                        //{
-                        //    appendTextWithColor(vs.Name + ": ", System.Drawing.Color.Black);
-                        //    appendTextWithColor("[WARNING]" + Environment.NewLine, System.Drawing.Color.OrangeRed);
-                        //    appendTextWithColor("Cannot duplicate Schedule to create the Element_Unique_Id parameter" + Environment.NewLine, System.Drawing.Color.OrangeRed);
-                        //}
-
                     }
                 }
 
@@ -311,7 +300,6 @@ namespace RevitAPI_Quyen.ViewModel
                         else
                         {
                             xlWorkSheetTmp.Cells[TitleRow, 1] = vs.GetCellText(SectionType.Body, 0, 0);
-                            //xlWorkSheetTmp.Cells[TitleRow, 1] = tsd.GetCellText(0, 0);
                             start_row_data = tsd.FirstRowNumber + 1;
                             offset_row = 1;
                         }
@@ -403,7 +391,7 @@ namespace RevitAPI_Quyen.ViewModel
                         //Scale All Image to Original Size After The Colunm is AutoFit
                         //Excel.Pictures pics = xlWorkSheetTmp.Pictures(misValue) as Excel.Pictures;
                         //scalePicturesToOriginal(pics);
-                        //this.scalePictureToOriginal(pics, 1);
+                        //scalePictureToOriginal(pics, 1);
 
                         //Draw Border
                         string cell11 = getCellNameByLetter(1, HeaderRow);
@@ -417,13 +405,11 @@ namespace RevitAPI_Quyen.ViewModel
                         //xlWorkSheetTmp.Copy(misValue, xlWorkBook.Worksheets[xlWorkBook.Worksheets.Count] as Excel.Worksheet);
                         xlWorkbook.Save();
 
-                        //appendTextWithColor(sheetName + ": ", System.Drawing.Color.Black);
-                        //appendTextWithColor("[DONE]" + Environment.NewLine, System.Drawing.Color.Green);
+                        
                     }
                     else
                     {
-                        //appendTextWithColor(sheetName + ": ", System.Drawing.Color.Black);
-                        //appendTextWithColor("[EMPTY DATA]" + Environment.NewLine, System.Drawing.Color.OrangeRed);
+                        
                     }
 
                     //Update Progress Bar
@@ -432,12 +418,9 @@ namespace RevitAPI_Quyen.ViewModel
                 }
                 catch (Exception ex)
                 {
-                    //this.appendTextWithColor(vs.Name + ": ", System.Drawing.Color.Black);
-                    //this.appendTextWithColor("[FAIL]" + Environment.NewLine, System.Drawing.Color.Red);
-                    //this.appendTextWithColor(ex.ToString() + Environment.NewLine, System.Drawing.Color.Red);
+                    
                 }
 
-                //sb.AppendLine("=======================");
 
                 if (isDeleteTmp)
                 {
@@ -459,7 +442,7 @@ namespace RevitAPI_Quyen.ViewModel
             }
             catch (Exception ex1)
             {
-                //this.appendTextWithColor(ex1.ToString() + Environment.NewLine, System.Drawing.Color.Red);
+                
             }
             finally
             {
@@ -467,28 +450,15 @@ namespace RevitAPI_Quyen.ViewModel
                 xlWorkbookTpl.Close(false, misValue, misValue);
                 xlApp.Quit();
 
-                this.releaseObject(xlWorksheetTpl);
-                this.releaseObject(xlWorkbook);
-                this.releaseObject(xlWorkbookTpl);
-                this.releaseObject(xlApp);
+                ReleaseObject(xlWorksheetTpl);
+                ReleaseObject(xlWorkbook);
+                ReleaseObject(xlWorkbookTpl);
+                ReleaseObject(xlApp);
             }
-            //xlWorkbook.SaveAs(assemplyDirPath + @"\excel_tpl\file_01.xlsx");
-
-            //TaskDialog.Show(TAG, sb.ToString());
-
-            //if (chkExportFolder.Checked)
-            //{
-            //    string dir = System.IO.Path.GetDirectoryName(this.txtSavePath.Text);
-            //    if (System.IO.Directory.Exists(dir))
-            //        System.Diagnostics.Process.Start("explorer.exe", dir);
-            //}
 
 
-            //if (chkOpenExportFile.Checked)
-            //{
             if (System.IO.File.Exists(SaveFilePath))
                 System.Diagnostics.Process.Start(SaveFilePath);
-            //}
         }
 
         private ViewSchedule CreateTemporarySchedule(ViewSchedule pOriSchedule, string pUniqueIDParamName, ref bool pCanDuplicate)
@@ -578,7 +548,6 @@ namespace RevitAPI_Quyen.ViewModel
                         if (!p2.IsReadOnly)
                         {
                             p2.Set(ele.Id.IntegerValue.ToString());
-                            //ele.LookupParameter(pUniqueIdParamName).Set(ele.Id.IntegerValue.ToString());
                         }
                     }
 
@@ -648,7 +617,7 @@ namespace RevitAPI_Quyen.ViewModel
             return rs;
         }
 
-        private void releaseObject(object obj)
+        private void ReleaseObject(object obj)
         {
             try
             {
@@ -658,7 +627,6 @@ namespace RevitAPI_Quyen.ViewModel
             catch (Exception ex)
             {
                 obj = null;
-                //MessageBox.Show("Unable to release the Object " + ex.ToString());
             }
             finally
             {
@@ -706,39 +674,9 @@ namespace RevitAPI_Quyen.ViewModel
 
         }
 
-        private void scalePicturesToOriginal(Excel.Pictures pics)
-        {
-            for (int i = 1; i <= pics.Count; i++)
-            {
-                Excel.Picture pic = pics.Item(i) as Excel.Picture;
-                pic.ShapeRange.LockAspectRatio = Microsoft.Office.Core.MsoTriState.msoCTrue;
-                pic.ShapeRange.ScaleWidth(1, Microsoft.Office.Core.MsoTriState.msoTrue);
-                pic.ShapeRange.ScaleHeight(1, Microsoft.Office.Core.MsoTriState.msoTrue);
-            }
-
-        }
-
-        private void scalePictureToOriginal(Excel.Pictures pics, int pos)
-        {
-            if (pics == null || pics.Count == 0 || pos < 1)
-                return;
-
-            Excel.Picture pic = pics.Item(pos) as Excel.Picture;
-            if (pic == null)
-                return;
-            pic.ShapeRange.LockAspectRatio = Microsoft.Office.Core.MsoTriState.msoCTrue;
-            pic.ShapeRange.ScaleWidth(1, Microsoft.Office.Core.MsoTriState.msoTrue);
-            pic.ShapeRange.ScaleHeight(1, Microsoft.Office.Core.MsoTriState.msoTrue);
+        
 
 
-        }
-
-        private void appendTextWithColor(string text, System.Drawing.Color color)
-        {
-            //this.rtbLog.Select(this.rtbLog.TextLength, 0);
-            //this.rtbLog.SelectionColor = color;
-            //this.rtbLog.AppendText(text);
-        }
 
     }
 

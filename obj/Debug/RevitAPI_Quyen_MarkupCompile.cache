@@ -10,11 +10,11 @@ none
 false
 DEBUG;TRACE
 
-5-1128665928
+6-176239039
 
-192104892321
+23-1302248395
 25-1031903159
-App.xaml;MyWindows\CreateScheduleWindow.xaml;MyWindows\ScheduleToExcelWindow.xaml;MyUserControl\ControlBarUC.xaml;ResourceXAML\MainResource.xaml;
+App.xaml;MyWindows\CreateScheduleWindow.xaml;MyWindows\ScheduleToExcelWindow.xaml;MyUserControl\ControlBarUC.xaml;MyWindows\SheetCreationWindow.xaml;ResourceXAML\MainResource.xaml;
 
 False
 

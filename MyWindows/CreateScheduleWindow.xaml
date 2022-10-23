@@ -61,14 +61,14 @@
                     </Grid>
                     <Grid Grid.Column="1">
                         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-                            <Button Command="{Binding AddToLeftCommand}" Style="{StaticResource MaterialDesignRaisedDarkButton}" Width="80" ToolTip="Resource name: MaterialDesignRaisedLightButton" Margin="0 55 0 0">
+                            <Button Command="{Binding AddToLeftCommand}" Style="{StaticResource MaterialDesignRaisedDarkButton}" Width="80" ToolTip="Remove from Creation List" Margin="0 55 0 0">
                                 <materialDesign:PackIcon Kind="ArrowLeftBold" Height="24" Width="24"/>
                             </Button>
-                            <Button Command="{Binding AddToRightCommand}" Style="{StaticResource MaterialDesignRaisedDarkButton}" Width="80" ToolTip="Resource name: MaterialDesignRaisedLightButton" Margin="0 5 0 0">
+                            <Button Command="{Binding AddToRightCommand}" Style="{StaticResource MaterialDesignRaisedDarkButton}" Width="80" ToolTip="Add from Creation List" Margin="0 5 0 0">
                                 <materialDesign:PackIcon Kind="ArrowRightBold" Height="24" Width="24"/>
                             </Button>
-                            <Button Command="{Binding ExportCommand}" Name="exportBt" Style="{StaticResource MaterialDesignRaisedDarkButton}" Width="100" ToolTip="Resource name: MaterialDesignRaisedLightButton" Margin="0 60 0 0" FontWeight="Bold">
-                                EXPORT
+                            <Button Command="{Binding ExportCommand}" Name="exportBt" Style="{StaticResource MaterialDesignRaisedDarkButton}" Width="100" ToolTip="Create selected schedule" Margin="0 60 0 0" FontWeight="Bold">
+                                CREATE
                             </Button>
                         </StackPanel>
                     </Grid>

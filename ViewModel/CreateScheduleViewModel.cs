@@ -109,9 +109,7 @@ namespace RevitAPI_Quyen.ViewModel
             {
                 Transaction t = new Transaction(Doc, "Create Schedule");
                 t.Start();
-                TaskDialog noti = new TaskDialog("Chú ý");
-                noti.MainContent = "this is notificaftion";
-                noti.Show();
+
                 ElementId wallCategoryId = new ElementId(BuiltInCategory.OST_Walls);
                 ViewSchedule wallSchedule = ViewSchedule.CreateSchedule(Doc, wallCategoryId);
                 ScheduleSortGroupField baseConstraintSorting = null;

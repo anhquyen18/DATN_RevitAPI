@@ -34,9 +34,6 @@
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Primary/MaterialDesignColor.blue.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Accent/MaterialDesignColor.Lime.xaml" />
             </ResourceDictionary.MergedDictionaries>
-            <!--<Style x:Name="myHeaderStyle" TargetType="{x:Type GridViewColumnHeader}">
-                <Setter Property="Visibility" Value="Collapsed" />
-            </Style>-->
         </ResourceDictionary>
         
     </Window.Resources>
@@ -67,7 +64,7 @@
                             <TextBox Text="{Binding TemplateFilePath}" materialDesign:HintAssist.Hint="Template File" Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
                         </Grid>
                         <Grid Grid.Column="1" Margin="0 0 15 0">
-                            <Button Command="{Binding SelectFileCommand}" Style="{StaticResource MaterialDesignRaisedDarkButton}" Width="100" ToolTip="Resource name: MaterialDesignRaisedLightButton">
+                            <Button Command="{Binding SelectFileCommand}" Style="{StaticResource MaterialDesignRaisedDarkButton}" Width="100" ToolTip="Select file">
                                 Select...
                             </Button>
                         </Grid>
@@ -81,7 +78,7 @@
                             <TextBox Name="saveFileTb" Text="{Binding SaveFilePath}" materialDesign:HintAssist.Hint="Save As" Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
                         </Grid>
                         <Grid Grid.Column="1" Margin="0 0 15 0">
-                            <Button Command="{Binding BrowsePathCommand}" Style="{StaticResource MaterialDesignRaisedDarkButton}" Width="100" ToolTip="Resource name: MaterialDesignRaisedLightButton">
+                            <Button Command="{Binding BrowsePathCommand}" Style="{StaticResource MaterialDesignRaisedDarkButton}" Width="100" ToolTip="Select save path">
                                 Browse...
                             </Button>
                         </Grid>
@@ -109,10 +106,10 @@
                     </Grid>
                     <Grid Grid.Column="1">
                         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-                            <Button Command="{Binding AddToLeftCommand}" Style="{StaticResource MaterialDesignRaisedDarkButton}" Width="80" ToolTip="Add to Schedule to Excel List" >
+                            <Button Command="{Binding AddToLeftCommand}" Style="{StaticResource MaterialDesignRaisedDarkButton}" Width="80" ToolTip="Remove from Schedule to Excel List" >
                                 <materialDesign:PackIcon Kind="ArrowLeftBold" Height="24" Width="24"/>
                             </Button>
-                            <Button Command="{Binding AddToRightCommand}" Style="{StaticResource MaterialDesignRaisedDarkButton}" Width="80" ToolTip="Remove from Schedule to Excel List" Margin="0 5 0 0">
+                            <Button Command="{Binding AddToRightCommand}" Style="{StaticResource MaterialDesignRaisedDarkButton}" Width="80" ToolTip="Add to Schedule to Excel List" Margin="0 5 0 0">
                                 <materialDesign:PackIcon Kind="ArrowRightBold" Height="24" Width="24"/>
                             </Button>
                             <Grid Margin="0 10 0 0">
