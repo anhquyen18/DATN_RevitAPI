@@ -14,6 +14,7 @@ using System.Windows;
 using System.Collections.Generic;
 using System.Text;
 using Excel = Microsoft.Office.Interop.Excel;
+using RevitAPI_Quyen.Model;
 
 namespace RevitAPI_Quyen.ViewModel
 {
@@ -418,7 +419,8 @@ namespace RevitAPI_Quyen.ViewModel
                 }
                 catch (Exception ex)
                 {
-                    
+                MessageBox.Show(ex.Message);
+
                 }
 
 
@@ -440,9 +442,9 @@ namespace RevitAPI_Quyen.ViewModel
                     xlWorkbook.Save();
                 }
             }
-            catch (Exception ex1)
+            catch (Exception ex)
             {
-                
+                MessageBox.Show(ex.Message);
             }
             finally
             {
@@ -477,6 +479,7 @@ namespace RevitAPI_Quyen.ViewModel
             catch (Exception ex)
             {
                 trans.RollBack();
+                MessageBox.Show(ex.Message);
                 pCanDuplicate = false;
                 return null;
             }
@@ -626,6 +629,7 @@ namespace RevitAPI_Quyen.ViewModel
             }
             catch (Exception ex)
             {
+                MessageBox.Show(ex.Message);
                 obj = null;
             }
             finally
@@ -669,9 +673,7 @@ namespace RevitAPI_Quyen.ViewModel
                 "AA", "AB", "AC", "AD", "AE", "AF", "AG", "AH", "AI", "AJ", "AK", "AL",
                 "AM", "AN", "AO", "AP", "AQ", "AR", "AS", "AT", "AU", "AV", "AW", "AX", "AY", "AZ"
             };
-
             return letters[col - 1] + row;
-
         }
 
         

@@ -1,6 +1,7 @@
 ﻿using Autodesk.Revit.DB;
 using MaterialDesignColors;
 using MaterialDesignThemes.Wpf;
+using RevitAPI_Quyen.Model;
 using RevitAPI_Quyen.ViewModel;
 using System;
 using System.Collections.Generic;
@@ -16,25 +17,25 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using RevitAPI_Quyen.Model;
+
 namespace RevitAPI_Quyen.MyWindows
 {
-    
-    public partial class CreateScheduleWindow : Window
+    /// <summary>
+    /// Interaction logic for AddElementToSheetWindow.xaml
+    /// </summary>
+    public partial class AddElementToSheetWindow : Window
     {
         private Autodesk.Revit.ApplicationServices.Application _App;
         public Autodesk.Revit.ApplicationServices.Application App { get => _App; set { _App = value; } }
         private Document _Doc;
         public Document Doc { get => _Doc; set { _Doc = value; } }
-
-        public CreateScheduleViewModel Viewmodel { get; set; }
-        public CreateScheduleWindow()
+        AddElementToSheetViewModel Viewmodel { get; set; }
+        public AddElementToSheetWindow()
         {
             ColorZoneAssist.SetMode(new CheckBox(), ColorZoneMode.Standard);
             Hue hue = new Hue("name", System.Windows.Media.Color.FromArgb(1, 2, 3, 4), System.Windows.Media.Color.FromArgb(1, 5, 6, 7));
-            
-            this.DataContext = Viewmodel = new CreateScheduleViewModel();
 
+            this.DataContext = Viewmodel = new AddElementToSheetViewModel();
             InitializeComponent();
 
             this.Loaded += new RoutedEventHandler(MainWindow_Loaded);
@@ -42,26 +43,27 @@ namespace RevitAPI_Quyen.MyWindows
 
         void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            Viewmodel.App = this.App;
-            Viewmodel.Doc = this.Doc;
+            Viewmodel.App = App;
+            Viewmodel.Doc = Doc;
+            InitComboboxViewportType();
         }
 
-        private void ActiveListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        void InitComboboxViewportType()
         {
-            Viewmodel.ActiveSelectedItems = new ObservableCollection<ScheduleItem>();
-            foreach (ScheduleItem item in ActiveListView.SelectedItems)
+            FilteredElementCollector col = new FilteredElementCollector(Doc);
+            IList<ElementType> viewportTypes = col.OfClass(typeof(ElementType)).Cast<ElementType>().Where(q => q.FamilyName == "Viewport").ToList();
+
+            Viewmodel.ViewportTypeList = new ObservableCollection<ViewportTypeItem>();
+            Viewmodel.ViewportTypeList.Clear();
+            foreach (ElementType ele in viewportTypes)
             {
-                Viewmodel.ActiveSelectedItems.Add(item);
+                ViewportTypeItem item = new ViewportTypeItem();
+                item.Name = ele.Name;
+                item.Value = ele;
+                Viewmodel.ViewportTypeList.Add(item);
             }
         }
 
-        private void CreationListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            Viewmodel.CreationSelectedItems = new ObservableCollection<ScheduleItem>();
-            foreach (ScheduleItem item in CreationListView.SelectedItems)
-            {
-                Viewmodel.CreationSelectedItems.Add(item);
-            }
-        }
+
     }
 }

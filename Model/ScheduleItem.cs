@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RevitAPI_Quyen.ViewModel
+namespace RevitAPI_Quyen.Model
 {
     public class ScheduleItem
     {

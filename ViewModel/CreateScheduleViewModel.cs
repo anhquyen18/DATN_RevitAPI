@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using RevitAPI_Quyen.Model;
 
 namespace RevitAPI_Quyen.ViewModel
 {

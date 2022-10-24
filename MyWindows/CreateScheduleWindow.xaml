@@ -22,7 +22,7 @@
 		
         d:DataContext="{d:DesignInstance Type=viewmodel:CreateScheduleViewModel}"
 		
-		x:Name="mainWindow"
+		x:Name="createSheetWindow"
         
         Title="Create Schedule Window" Height="350" Width="700">
     <Window.Resources>
@@ -42,7 +42,7 @@
             <RowDefinition></RowDefinition>
         </Grid.RowDefinitions>
         <Grid Grid.Row="0">
-            <uc:ControlBarUC Tag="{Binding Title, ElementName=mainWindow}"></uc:ControlBarUC>
+            <uc:ControlBarUC Tag="{Binding Title, ElementName=createSheetWindow}"></uc:ControlBarUC>
         </Grid>
         <Grid Grid.Row ="1"  Background="Azure">
             <materialDesign:Card Margin="10" Background="Azure">

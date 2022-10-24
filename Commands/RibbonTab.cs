@@ -31,12 +31,14 @@ namespace RevitAPI_Quyen
             PushButtonData toExcelBt = new PushButtonData("toExcelBt", "Schedule to Excel", path, "RevitAPI_Quyen.Commands.ScheduleToExcelCommand");
             PushButtonData createScheduleBt = new PushButtonData("creatExcelBt", "Create schedules", path, "RevitAPI_Quyen.Commands.CreateScheduleCommand");
             PushButtonData sheetCreationBt = new PushButtonData("sheetCreationBt", "Create sheets", path, "RevitAPI_Quyen.Commands.SheetCreationCommand");
+            PushButtonData addElementToSheetBt = new PushButtonData("addElementToSheetBt", "Add elements to sheet", path, "RevitAPI_Quyen.Commands.AddElementToSheetCommand");
 
             //panel.AddItem(toExcelBt);
 
             PushButton toExcel = ExcelPn.AddItem(toExcelBt) as PushButton;
             PushButton createSchedule = createSchedulePn.AddItem(createScheduleBt) as PushButton;
             PushButton sheetCreation = sheetEditorPn.AddItem(sheetCreationBt) as PushButton;
+            PushButton addElementToSheet = sheetEditorPn.AddItem(addElementToSheetBt) as PushButton;
 
             Uri wrefImageUri = new Uri(@"F:\University\Hoc ky 9\DATN\RevitAPI_Quyen\Resources\logoCTT29x32.png");
             BitmapImage wrefImage = new BitmapImage(wrefImageUri);
@@ -44,6 +46,7 @@ namespace RevitAPI_Quyen
             toExcel.LargeImage = wrefImage;
             createSchedule.LargeImage = wrefImage;
             sheetCreation.LargeImage = wrefImage;
+            addElementToSheet.LargeImage = wrefImage;
 
             return Result.Succeeded;
         }

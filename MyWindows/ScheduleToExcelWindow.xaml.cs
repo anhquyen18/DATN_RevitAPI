@@ -21,6 +21,7 @@ using MaterialDesignThemes.Wpf;
 using Excel = Microsoft.Office.Interop.Excel;
 using RevitAPI_Quyen.ViewModel;
 using RevitAPI_Quyen.Commands;
+using RevitAPI_Quyen.Model;
 
 namespace RevitAPI_Quyen.MyWindows
 {
@@ -34,18 +35,6 @@ namespace RevitAPI_Quyen.MyWindows
         public Autodesk.Revit.ApplicationServices.Application App { get => _App; set { _App = value; } }
         private Document _Doc;
         public Document Doc { get => _Doc; set { _Doc = value; } }
-        private const string TAG = "Schedule To Excel";
-        private Microsoft.Office.Interop.Excel.Application xlApp;
-        public const int DEFAULT_TITLE_ROW = 5;
-        public const int DEFAULT_HEADER_ROW = 7;
-        public const int DEFAULT_DATA_ROW = 8;
-        public const string ELEMENT_UNIQUE_ID_PARAM_NAME = "Element_Unique_Id";
-        int TitleRow = 0;
-        int HeaderRow = 0;
-        int DataRow = 0;
-        string TemplateFilePath;
-        string SaveFilePath;
-
         public ScheduleToExcelWindow()
         {
             ColorZoneAssist.SetMode(new CheckBox(), ColorZoneMode.Light);
