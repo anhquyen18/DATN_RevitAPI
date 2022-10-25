@@ -6,6 +6,7 @@ using RevitAPI_Quyen.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -30,6 +31,7 @@ namespace RevitAPI_Quyen.MyWindows
         private Document _Doc;
         public Document Doc { get => _Doc; set { _Doc = value; } }
         AddElementToSheetViewModel Viewmodel { get; set; }
+        ObservableCollection<SheetItem> InitSheetList;
         public AddElementToSheetWindow()
         {
             ColorZoneAssist.SetMode(new CheckBox(), ColorZoneMode.Standard);
@@ -46,15 +48,17 @@ namespace RevitAPI_Quyen.MyWindows
             Viewmodel.App = App;
             Viewmodel.Doc = Doc;
             InitComboboxViewportType();
+            InitListBoxSheets();
+            CollectionView sheetCollectionView = (CollectionView)CollectionViewSource.GetDefaultView(SheetListView.ItemsSource);
+            sheetCollectionView.SortDescriptions.Add(new SortDescription("SheetNumber", ListSortDirection.Ascending));
         }
 
         void InitComboboxViewportType()
         {
             FilteredElementCollector col = new FilteredElementCollector(Doc);
             IList<ElementType> viewportTypes = col.OfClass(typeof(ElementType)).Cast<ElementType>().Where(q => q.FamilyName == "Viewport").ToList();
-
             Viewmodel.ViewportTypeList = new ObservableCollection<ViewportTypeItem>();
-            Viewmodel.ViewportTypeList.Clear();
+
             foreach (ElementType ele in viewportTypes)
             {
                 ViewportTypeItem item = new ViewportTypeItem();
@@ -64,6 +68,63 @@ namespace RevitAPI_Quyen.MyWindows
             }
         }
 
+        private void InitListBoxSheets()
+        {
+            ObservableCollection<ViewSheet> viewlist = GetAllViewSheets();
+            Viewmodel.SheetList = new ObservableCollection<SheetItem>();
+            InitSheetList = new ObservableCollection<SheetItem>();
 
+            foreach (ViewSheet sheet in viewlist)
+            {
+                SheetItem item = new SheetItem();
+                item.SheetName = sheet.Name;
+                item.SheetNumber = sheet.SheetNumber;
+                item.SheetId = sheet.Id;
+
+                Viewmodel.SheetList.Add(item);
+                InitSheetList.Add(item);
+            }
+        }
+
+        private ObservableCollection<ViewSheet> GetAllViewSheets()
+        {
+            FilteredElementCollector col = new FilteredElementCollector(Doc);
+            col.OfCategory(BuiltInCategory.OST_Sheets);
+
+            ObservableCollection<ViewSheet> list = new ObservableCollection<ViewSheet>();
+            foreach (ViewSheet item in col.ToElements())
+            {
+                list.Add(item);
+            }
+
+            return list;
+        }
+
+        private void SearchTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            ObservableCollection<SheetItem> list = Viewmodel.SheetList;
+            list.Clear();
+
+            if (string.IsNullOrEmpty(SearchTextBox.Text))
+            {
+                foreach (SheetItem item in InitSheetList)
+                {
+                    list.Add(item);
+                }
+            }
+            else
+            {
+                string s = SearchTextBox.Text.ToLower();
+                var sql = from item in InitSheetList
+                          where item.SheetNumber.ToLower().Contains(s) || item.SheetName.ToLower().Contains(s)
+                          select item;
+
+                foreach(SheetItem item in sql.ToList())
+                {
+                    list.Add(item);
+                }
+
+            }
+        }
     }
 }

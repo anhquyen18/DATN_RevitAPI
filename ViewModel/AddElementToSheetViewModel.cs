@@ -20,8 +20,10 @@ namespace RevitAPI_Quyen.ViewModel
         #region binding variables
         private ObservableCollection<ViewportTypeItem> _ViewportTypeList;
         public ObservableCollection<ViewportTypeItem> ViewportTypeList { get => _ViewportTypeList; set { _ViewportTypeList = value; OnPropertyChanged(); } }
-        private int _CreationSelectedIndex;
-        public int CreationSelectedIndex { get => _CreationSelectedIndex; set { _CreationSelectedIndex = value; OnPropertyChanged(); } }
+        private ObservableCollection<SheetItem> _SheetList;
+        public ObservableCollection<SheetItem> SheetList { get => _SheetList; set { _SheetList = value; OnPropertyChanged(); } }
+        private string _SearchText;
+        public string SearchText { get => _SearchText; set { _SearchText = value; OnPropertyChanged(); } }
         #endregion
 
         #region revit variables
@@ -33,7 +35,15 @@ namespace RevitAPI_Quyen.ViewModel
 
         public AddElementToSheetViewModel()
         {
+            
+        }
 
+        public enum FilterViewOption
+        {
+            VIEW = 1,
+            SCHEDULE = 2,
+            LEGEND = 3,
+            SCHEDULE_OR_LENGEND = 4
         }
     }
 }
