@@ -19,7 +19,7 @@
     <VendorDescription>Tran Anh Quyen, anhquyen18092000@gmail.com</VendorDescription>
   </AddIn>-->
 
-  <AddIn Type="Command">
+  <!--<AddIn Type="Command">
     <Assembly>RevitAPI_Quyen.dll</Assembly>
     <ClientId>71da2592-c826-4835-a4fe-275496bd88c2</ClientId>
     <FullClassName>RevitAPI_Quyen.Commands.CreateScheduleCommand</FullClassName>
@@ -27,6 +27,15 @@
     <Description>quick create a schedule</Description>
     <VendorId>PAI02</VendorId>
     <VendorDescription>Tran Anh Quyen, anhquyen18092000@gmail.com</VendorDescription>
-  </AddIn>
+  </AddIn>-->
 
+  <AddIn Type="Command">
+    <Assembly>RevitAPI_Quyen.dll</Assembly>
+    <ClientId>cadcf451-bae5-4a83-917d-2aecfe16c43c</ClientId>
+    <FullClassName>RevitAPI_Quyen.Commands.TestExportCommand</FullClassName>
+    <Text>Test Export fbx</Text>
+    <Description>Test Export fbx</Description>
+    <VendorId>PAI02</VendorId>
+    <VendorDescription>Tran Anh Quyen, anhquyen18092000@gmail.com</VendorDescription>
+  </AddIn>
 </RevitAddIns>

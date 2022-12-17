@@ -127,6 +127,7 @@
     <Compile Include="Commands\AddElementToSheetCommand.cs" />
     <Compile Include="Commands\CreateScheduleCommand.cs" />
     <Compile Include="Commands\SheetCreationCommand.cs" />
+    <Compile Include="Commands\TestExportCommand.cs" />
     <Compile Include="Model\SheetItem.cs" />
     <Compile Include="Model\ViewItem.cs" />
     <Compile Include="Model\ViewportTypeItem.cs" />
@@ -227,6 +228,7 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <None Include="Resources\template.xlsx" />
+    <None Include="Resources\test create sheet.xlsx" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -240,15 +242,6 @@
       <Guid>{2DF8D04C-5BFA-101B-BDE5-00AA0044DE52}</Guid>
       <VersionMajor>2</VersionMajor>
       <VersionMinor>8</VersionMinor>
-      <Lcid>0</Lcid>
-      <WrapperTool>primary</WrapperTool>
-      <Isolated>False</Isolated>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-    </COMReference>
-    <COMReference Include="MSHTML">
-      <Guid>{3050F1C5-98B5-11CF-BB82-00AA00BDCE0B}</Guid>
-      <VersionMajor>4</VersionMajor>
-      <VersionMinor>0</VersionMinor>
       <Lcid>0</Lcid>
       <WrapperTool>primary</WrapperTool>
       <Isolated>False</Isolated>
